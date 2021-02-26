@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 @Entity("users")
 class User {
     @PrimaryColumn()
-    readonly id: string;  // faz com que nosso codigo crie essa string
+    readonly id: string;  // faz com que nosso código crie essa string
 
     @Column()
     name: string;

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
-import { UsersRepository } from "../repositories/UsersRespository";
+import { UsersRepository } from "../repositories/UsersRepository";
 
 
 class UserController {
