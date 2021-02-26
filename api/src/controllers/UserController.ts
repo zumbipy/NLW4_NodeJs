@@ -6,10 +6,11 @@ import { User } from "../models/User";
 class UserController {
     async create(request: Request, response: Response) {
         const { name, email } = request.body;
+         // Responsável por manipular o bando de dados.
+        const usersRepository = getRepository(User); 
 
-        const usersRepository = getRepository(User);  // Responsável por manipular o bando de dados.
-        const userAlreadyExists = await usersRepository.findOne({ email })  // Faça uma busca por email na tabela.
-
+        // Faça uma busca por email na tabela.
+        const userAlreadyExists = await usersRepository.findOne({ email })  
         if (userAlreadyExists) {
             return response.status(400).json({
                 erro: "Usuario Já existe!!!"
