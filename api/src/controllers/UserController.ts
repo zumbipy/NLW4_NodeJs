@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
-import { User } from "../models/User";
+import { getCustomRepository } from "typeorm";
+import { UsersRepository } from "../repositories/UsersRespository";
 
 
 class UserController {
     async create(request: Request, response: Response) {
         const { name, email } = request.body;
          // Responsável por manipular o bando de dados.
-        const usersRepository = getRepository(User); 
+        const usersRepository = getCustomRepository(UsersRepository); 
 
         // Faça uma busca por email na tabela.
         const userAlreadyExists = await usersRepository.findOne({ email })  
@@ -29,4 +29,4 @@ class UserController {
     }
 }
 
-export { UserController }
+export { UserController };
