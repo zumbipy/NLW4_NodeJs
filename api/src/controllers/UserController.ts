@@ -13,7 +13,7 @@ class UserController {
         const userAlreadyExists = await usersRepository.findOne({ email })  
         if (userAlreadyExists) {
             return response.status(400).json({
-                erro: "Usuario Já existe!!!"
+                erro: "Usuário Já existe!!!"
             })
         }
 
