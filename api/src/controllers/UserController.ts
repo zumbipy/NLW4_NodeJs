@@ -1,16 +1,39 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { UsersRepository } from "../repositories/UsersRepository";
+import * as yup from 'yup'
+
 
 
 class UserController {
     async create(request: Request, response: Response) {
         const { name, email } = request.body;
-         // Responsável por manipular o bando de dados.
-        const usersRepository = getCustomRepository(UsersRepository); 
+
+        const schema = yup.object().shape({
+            name: yup.string().required(),
+            email: yup.string().email().required()
+        })
+
+        // if(!(await schema.isValid(request.body))){
+        //     response.status(400).json({
+        //         error: "Error Is Not Valido"
+        //     })
+        // }
+
+        try {
+            await schema.validate(request.body, { abortEarly: false });
+        } catch (err) {
+            return response.status(400).json({
+                error: err
+
+            })
+        }
+
+        // Responsável por manipular o bando de dados.
+        const usersRepository = getCustomRepository(UsersRepository);
 
         // Faça uma busca por email na tabela.
-        const userAlreadyExists = await usersRepository.findOne({ email })  
+        const userAlreadyExists = await usersRepository.findOne({ email })
         if (userAlreadyExists) {
             return response.status(400).json({
                 erro: "Usuário Já existe!!!"
