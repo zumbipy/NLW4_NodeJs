@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { UsersRepository } from "../repositories/UsersRepository";
 import * as yup from 'yup'
+import { AppErros } from "../errors/AppErros";
 
 
 
@@ -23,10 +24,7 @@ class UserController {
         try {
             await schema.validate(request.body, { abortEarly: false });
         } catch (err) {
-            return response.status(400).json({
-                error: err
-
-            })
+            throw new AppErros(err)
         }
 
         // Responsável por manipular o bando de dados.
@@ -35,9 +33,7 @@ class UserController {
         // Faça uma busca por email na tabela.
         const userAlreadyExists = await usersRepository.findOne({ email })
         if (userAlreadyExists) {
-            return response.status(400).json({
-                erro: "Usuário Já existe!!!"
-            })
+            throw new AppErros("Usuário Já existe!!!")
         }
 
         // Obrigadorio a criar para pode salva.
